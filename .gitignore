@@ -1,0 +1,6 @@
+out/
+inputs/
+.idea/
+
+session_id
+*.iml
