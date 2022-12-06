@@ -13,11 +13,7 @@ import java.util.List;
 
 public class AdventInputReader {
 
-    static public List<String> getInput(int year, int dayOfMonth) throws IOException{
-        return readInput(year, dayOfMonth);
-    }
-
-    static public List<String> readInput(int year, int day) throws IOException{
+    static public List<String> getInput(int year, int day) throws IOException{
         Path path = Paths.get(System.getProperty("user.dir")+"/inputs/"+year+"/input"+ day + ".txt");
         List<String> inputStrings = new ArrayList<>();
         try (InputStream is = Files.newInputStream(path)) {
@@ -53,6 +49,7 @@ public class AdventInputReader {
             URLConnection connection = url.openConnection();
             connection.setRequestProperty("Cookie","session="
                     + Files.readString(Path.of(System.getProperty("user.dir")+"/session_id")));
+            connection.setRequestProperty("User-Agent", "githum.com/arq-e/aoc by aragwaith@gmail.com");
 
             Files.copy(connection.getInputStream(), path);
         }

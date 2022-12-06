@@ -16,12 +16,7 @@ public class day6 {
 
     public static void part1(List<String> list) {
         int sum = 0;
-
-        StringBuilder sb = new StringBuilder();
-        for (String s : list) {
-            sb.append(s);
-        }
-        String str = sb.toString();
+        String str = list.get(0);
         Deque<Character> deque = new ArrayDeque<>(4);
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < str.length();i++) {
@@ -46,13 +41,7 @@ public class day6 {
 
     public static void part2(List<String> list) {
         int sum = 0;
-
-
-        StringBuilder sb = new StringBuilder();
-        for (String s : list) {
-            sb.append(s);
-        }
-        String str = sb.toString();
+        String str = list.get(0);
         Deque<Character> deque = new ArrayDeque<>(14);
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < str.length();i++) {
@@ -70,7 +59,6 @@ public class day6 {
                 set.clear();
             }
         }
-
 
         System.out.println(sum);
     }
