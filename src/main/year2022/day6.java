@@ -26,12 +26,12 @@ public class day6 {
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < str.length();i++) {
             deque.addLast(str.charAt(i));
-            if (set.size() > 4) {
+            if ( deque.size() > 4) {
                 deque.removeFirst();
             }
-            if (set.size() == 4) {
+            if (deque.size() == 4) {
 
-                set.addAll(set);
+                set.addAll(deque);
                 if (set.size() == 4) {
                     sum = i+1;
                     break;
@@ -57,12 +57,12 @@ public class day6 {
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < str.length();i++) {
             deque.addLast(str.charAt(i));
-            if (set.size() > 14) {
+            if (deque.size() > 14) {
                 deque.removeFirst();
             }
-            if (set.size() == 14) {
+            if (deque.size() == 14) {
 
-                set.addAll(set);
+                set.addAll(deque);
                 if (set.size() == 14) {
                     sum = i+1;
                     break;
