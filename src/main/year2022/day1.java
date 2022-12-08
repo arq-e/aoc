@@ -13,15 +13,14 @@ public class day1 {
         AdventInputReader.createYearDir(Year.now().getValue());
         List<String> input = AdventInputReader.getInput(2022, 1);
 
-        part1(input);
+        solve(input);
 
-        part2(input);
     }
 
-    public static void part1(List<String> input) {
+    public static void solve(List<String> list) {
         int maxSum = 0;
         int sum = 0;
-        for (String s : input) {
+        for (String s : list) {
             if (s.equals("")) {
                 maxSum = Math.max(sum,maxSum);
                 sum = 0;
@@ -29,13 +28,16 @@ public class day1 {
             else sum += Integer.parseInt(s);
         }
 
+
         System.out.println(maxSum);
+
+        solve2(list);
     }
 
-    public static void part2(List<String> input) {
+    public static void solve2(List<String> list) {
         PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(3);
         int sum = 0;
-        for (String s : input) {
+        for (String s : list) {
             if (s.equals("")) {
                 priorityQueue.add(sum);
                 sum = 0;

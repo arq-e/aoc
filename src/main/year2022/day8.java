@@ -10,11 +10,10 @@ public class day8 {
     public static void main(String[] args) throws IOException {
         List<String> input = AdventInputReader.getInput(2022, 8);
 
-        part1(input);
-        part2(input);
+        solve(input);
     }
 
-    public static void part1(List<String> input) {
+    public static void solve(List<String> input) {
         int sum =  0;
         int[][] trees = new int[input.size()][input.get(0).length()];
         for (int i = 0; i < input.size(); i++) {
@@ -39,14 +38,14 @@ public class day8 {
             int left = trees[i][0];
             for (int j = 1; j < trees[0].length-1;j++) {
                 if (trees[i][j] > left) {
-                    accept[i][j] = 1;
+                    accept[i][j] = trees[i][j];
                     left = trees[i][j];
                 }
             }
             int right = trees[i][trees[0].length-1];
             for (int j = trees[0].length-2; j > 0;j--) {
                 if (trees[i][j] > right) {
-                    accept[i][j] = 1;
+                    accept[i][j] = trees[i][j];
                     right = trees[i][j];
                 }
             }
@@ -56,14 +55,14 @@ public class day8 {
             int upper = trees[0][i];
             for (int j = 1; j < trees.length-1;j++) {
                 if (trees[j][i] > upper) {
-                    accept[j][i] = 1;
+                    accept[j][i] = trees[j][i];
                     upper = trees[j][i];
                 }
             }
             int down = trees[trees.length-1][i];
             for (int j = trees.length - 2; j > 0;j--) {
                 if (trees[j][i] > down) {
-                    accept[j][i] = 1;
+                    accept[j][i] = trees[j][i];
                     down = trees[j][i];
                 }
             }
@@ -77,64 +76,14 @@ public class day8 {
             }
         }
         System.out.println(sum);
+
+        solve2(trees, accept);
     }
 
-    public static void part2(List<String> input) {
-        int sum =  0;
-        int[][] trees = new int[input.size()][input.get(0).length()];
-        for (int i = 0; i < input.size(); i++) {
-            String s = input.get(i);
-            for (int j = 0; j < input.get(i).length(); j++) {
-                trees[i][j] = s.charAt(j);
-            }
-        }
-
-        int[][] accept = new int[trees.length][trees[0].length];
-        for (int i = 0; i < trees.length;i++) {
-            accept[i][0] = 1;
-            accept[i][trees[0].length-1] = 1;
-        }
-        for (int i = 0; i < trees[0].length;i++) {
-            accept[0][i] = 1;
-            accept[trees.length-1][i] = 1;
-        }
-
-        for (int i = 1; i < trees.length-1;i++) {
-            int left = trees[i][0];
-            for (int j = 1; j < trees[0].length-1;j++) {
-                if (trees[i][j] > left) {
-                    accept[i][j] = trees[i][j];
-                    left = trees[i][j];
-                }
-            }
-            int right = trees[i][trees[0].length-1];
-            for (int j = trees[0].length-2; j > 0;j--) {
-                if (trees[i][j] > right) {
-                    accept[i][j] = trees[i][j];
-                    right = trees[i][j];
-                }
-            }
-        }
-
-        for (int i = 1; i < trees[0].length-1;i++) {
-            int upper = trees[0][i];
-            for (int j = 1; j < trees.length-1;j++) {
-                if (trees[j][i] > upper) {
-                    accept[j][i] = trees[j][i];
-                    upper = trees[j][i];
-                }
-            }
-            int down = trees[trees.length-1][i];
-            for (int j = trees.length - 2; j > 0;j--) {
-                if (trees[j][i] > down) {
-                    accept[j][i] = trees[j][i];
-                    down = trees[j][i];
-                }
-            }
-        }
+    public static void solve2(int[][] trees, int[][] accept) {
 
         int max = 0;
-        for (int i = 1; i < input.size()-1;i++) {
+        for (int i = 1; i < trees.length-1;i++) {
             for (int j = 1; j < trees[0].length-1;j++) {
                 if (accept[i][j] >= 1) {
                     int res = 1;

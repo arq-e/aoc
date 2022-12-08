@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 public class day5 {
     public static void main(String[] args) throws IOException {
         List<String> input = AdventInputReader.getInput(2022, 5);
-        part1(input);
-        part2(input);
+        solve(input);
+
     }
 
-    public static void part1(List<String> list) {
+    public static void solve(List<String> list) {
         int i;
         Map<Integer, Deque<Character>> map = new HashMap<>();
         for (i = 0; i < list.size();i++) {
@@ -32,7 +32,7 @@ public class day5 {
                 num += 1;
             }
         }
-
+        int k = i + 2;
         for (i+=2; i < list.size(); i++) {
                 String str = list.get(i);
                 str = str.replaceAll("[^0-9]"," ");
@@ -54,9 +54,11 @@ public class day5 {
         }
 
         System.out.println(sb.toString());
+
+        solve2(list);
     }
 
-    public static void part2(List<String> list) {
+    public static void solve2(List<String> list) {
         int i;
         Map<Integer, Deque<Character>> map = new HashMap<>();
         for (i = 0; i < list.size();i++) {

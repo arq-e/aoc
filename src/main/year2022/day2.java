@@ -9,11 +9,10 @@ public class day2 {
     public static void main(String[] args) throws IOException{
         List<String> input = AdventInputReader.getInput(2022,2);
 
-        part1(input);
-        part2(input);
+        solve(input);
     }
 
-    public static void part1(List<String> list) {
+    public static void solve(List<String> list) {
         int sum = 0;
         for (String s : list) {
             if (s.charAt(2) == 'X') {
@@ -31,9 +30,11 @@ public class day2 {
             }
         }
         System.out.println(sum);
+
+        solve2(list);
     }
 
-    public static void part2(List<String> list) {
+    public static void solve2(List<String> list) {
         int sum = 0;
         for (String s : list) {
             if (s.charAt(2) == 'X') {

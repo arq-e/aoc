@@ -11,11 +11,11 @@ public class day3 {
     public static void main(String[] args) throws  IOException{
         List<String> input = AdventInputReader.getInput(2022,3);
 
-        part1(input);
-        part2(input);
+        solve(input);
+
     }
 
-    public static void part1(List<String> list) {
+    public static void solve(List<String> list) {
         Set<Character> set1 = new HashSet<>();
         Set<Character> set2 = new HashSet<>();
         int sum = 0;
@@ -34,9 +34,11 @@ public class day3 {
             set2.clear();
         }
         System.out.println(sum);
+
+        solve2(list);
     }
 
-    public static void part2(List<String> list) {
+    public static void solve2(List<String> list) {
         Set<Character> set1 = new HashSet<>();
         Set<Character> set2 = new HashSet<>();
         Set<Character> set3 = new HashSet<>();

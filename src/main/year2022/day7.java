@@ -10,17 +10,16 @@ public class day7 {
     public static void main(String[] args) throws IOException {
         List<String> input = AdventInputReader.getInput(2022, 7);
 
-        part1(input);
-        part2(input);
+        solve(input);
     }
 
-    public static void part1(List<String> list) {
+    public static void solve(List<String> list) {
         int sum = 0;
         Map<String, List<String>> dirs = new HashMap<>();
         dirs.put("/", new ArrayList<>());
         Stack<Directory> dirStack = new Stack<>();
         Directory activeDir = new Directory(" ");
-        Set<Directory> dirsSet = new HashSet<>();
+        List<Directory> dirsSet = new ArrayList<>();
         for (String s : list) {
             if (s.startsWith("$ cd")) {
                 String adress = s.substring(5);
@@ -61,54 +60,15 @@ public class day7 {
         }
 
         System.out.println(sum);
+
+        solve2(dirs, dirsSet);
     }
 
-    public static void part2(List<String> list) {
+    public static void solve2(Map<String, List<String>> dirs, List<Directory> dirsSet) {
         int sum = 0;
         int space = 40000000;
 
-        Map<String, Integer> files = new HashMap<>();
-        Map<String, List<String>> dirs = new HashMap<>();
-        dirs.put("/", new ArrayList<>());
-        Stack<Directory> dirStack = new Stack<>();
-        Directory activeDir = new Directory(" ");
-        List<Directory> dirsSet = new ArrayList<>();
-        for (String s : list) {
-            if (s.startsWith("$ cd")) {
-                String adress = s.substring(5);
-                if (adress.equals("..")) {
-                    dirStack.pop();
-                    activeDir = dirStack.peek();
-                } else {
-                    if (adress.equals("/")) {
-                        Directory dir = new Directory("/");
-                        activeDir = dir;
-                        dirsSet.add(dir);
-                        dirStack.add(dir);
-                    } else {
-                        for (Directory dir : activeDir.dirs) {
-                            if (dir.name.equals(adress)) {
-                                activeDir = dir;
-                                dirsSet.add(dir);
-                                dirStack.add(dir);
-                                break;
-                            }
-                        }
-                    }
-                }
-            } else if (s.startsWith("$ ls")) {
-                continue;
-            } else if (s.startsWith("dir")) {
-                Directory childDir = new Directory(s.substring(4));
-                activeDir.dirs.add(childDir);
-            } else {
-                activeDir.files.put(s.substring(s.indexOf(' ')+1),
-                        Integer.parseInt(s.substring(0, s.indexOf(' '))));
-            }
-        }
-
         List<Integer> dirSizes = new ArrayList<>();
-        int i = 0;
         for (Directory dir: dirsSet) {
             dirSizes.add(dir.getSize());
         }
