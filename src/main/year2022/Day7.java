@@ -1,19 +1,21 @@
 package main.year2022;
 
-import main.AdventInputReader;
+import main.utils.AdventInputReader;
+import main.utils.Day;
 
 import java.io.IOException;
 import java.util.*;
 
 
-public class day7 {
-    public static void main(String[] args) throws IOException {
-        List<String> input = AdventInputReader.getInput(2022, 7);
+public class Day7 extends Day {
 
-        solve(input);
+    public static void main(String[] args) throws IOException{
+        Day7 day = new Day7();
+        List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        day.solve(input);
     }
 
-    public static void solve(List<String> list) {
+    public void solve(List<String> list) {
         int sum = 0;
         Stack<Directory> dirStack = new Stack<>();
         Directory activeDir = new Directory(" ");
@@ -62,7 +64,7 @@ public class day7 {
         solve2(dirsSet);
     }
 
-    public static void solve2(List<Directory> dirsSet) {
+    public void solve2(List<Directory> dirsSet) {
         int space = 40000000;
 
         List<Integer> dirSizes = new ArrayList<>();
@@ -82,7 +84,7 @@ public class day7 {
         System.out.println(sumRemoved);
     }
 
-    public static class Directory {
+    public class Directory {
         String name;
         List<Directory> dirs;
         Map<String, Integer> files;

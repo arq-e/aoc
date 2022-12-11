@@ -1,20 +1,20 @@
 package main.year2022;
 
-import main.AdventInputReader;
+import main.utils.AdventInputReader;
+import main.utils.Day;
 
 import java.io.IOException;
 import java.util.*;
 
-public class day10 {
+public class Day10 extends Day {
 
-    public static void main(String[] args) throws IOException {
-        List<String> input = AdventInputReader.getInput(2022,10);
-
-        solve(input);
-
+    public static void main(String[] args) throws IOException{
+        Day10 day = new Day10();
+        List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        day.solve(input);
     }
 
-    public static void solve(List<String> list) {
+    public void solve(List<String> list) {
 
         int x = 1;
         int n = 1;
@@ -37,8 +37,7 @@ public class day10 {
         solve2(list);
     }
 
-    public static void solve2(List<String> list) {
-        int sum = 0;
+    public void solve2(List<String> list) {
         int n = 0;
         int x = 1;
         char[][] screen = new char[6][40];

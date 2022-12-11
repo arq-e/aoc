@@ -1,19 +1,20 @@
 package main.year2022;
 
-import main.AdventInputReader;
+import main.utils.AdventInputReader;
+import main.utils.Day;
 
 import java.io.IOException;
 import java.util.*;
 
-public class day11 {
+public class Day11 extends Day {
 
-    public static void main(String[] args) throws IOException {
-        List<String> input = AdventInputReader.getInput(2022,11);
-
-        solve(input);
+    public static void main(String[] args) throws IOException{
+        Day11 day = new Day11();
+        List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        day.solve(input);
     }
 
-    public static void solve(List<String> list) {
+    public void solve(List<String> list) {
         List<List<Integer>> monkeyItems = new ArrayList<>();
         List<Integer> monkeyTest = new ArrayList<>();
         List<int[]> monkeyAction = new ArrayList<>();
@@ -90,7 +91,7 @@ public class day11 {
         solve2(monkeyItemsCopy, monkeyOperation, monkeyTest, monkeyAction);
     }
 
-    public static void solve2(List<List<Long>> monkeyItems, List<int[]> monkeyOperation,
+    public void solve2(List<List<Long>> monkeyItems, List<int[]> monkeyOperation,
                               List<Integer> monkeyTest, List<int[]> monkeyAction) {
         int[] inspected = new int[monkeyItems.size()];
         int div = 1;

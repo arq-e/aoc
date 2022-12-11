@@ -1,23 +1,21 @@
 package main.year2022;
 
-import main.AdventInputReader;
+import main.utils.AdventInputReader;
+import main.utils.Day;
 
 import java.io.IOException;
-import java.time.Year;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class day1 {
+public class Day1 extends Day {
 
     public static void main(String[] args) throws IOException{
-        AdventInputReader.createYearDir(Year.now().getValue());
-        List<String> input = AdventInputReader.getInput(2022, 1);
-
-        solve(input);
-
+        Day1 day = new Day1();
+        List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        day.solve(input);
     }
 
-    public static void solve(List<String> list) {
+    public void solve(List<String> list) {
         int maxSum = 0;
         int sum = 0;
         for (String s : list) {
@@ -34,7 +32,7 @@ public class day1 {
         solve2(list);
     }
 
-    public static void solve2(List<String> list) {
+    public void solve2(List<String> list) {
         PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(3);
         int sum = 0;
         for (String s : list) {

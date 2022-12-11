@@ -1,21 +1,22 @@
 package main.year2022;
 
-import main.AdventInputReader;
+import main.utils.AdventInputReader;
+import main.utils.Day;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class day3 {
-    public static void main(String[] args) throws  IOException{
-        List<String> input = AdventInputReader.getInput(2022,3);
+public class Day3 extends Day {
 
-        solve(input);
-
+    public static void main(String[] args) throws IOException{
+        Day3 day = new Day3();
+        List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        day.solve(input);
     }
 
-    public static void solve(List<String> list) {
+    public void solve(List<String> list) {
         Set<Character> set1 = new HashSet<>();
         Set<Character> set2 = new HashSet<>();
         int sum = 0;
@@ -38,7 +39,7 @@ public class day3 {
         solve2(list);
     }
 
-    public static void solve2(List<String> list) {
+    public void solve2(List<String> list) {
         Set<Character> set1 = new HashSet<>();
         Set<Character> set2 = new HashSet<>();
         Set<Character> set3 = new HashSet<>();
@@ -57,7 +58,7 @@ public class day3 {
             for (Character ch : set1) {
                 if (set2.contains(ch) && set3.contains(ch)) {
                     if (ch >= 'a') sum += ch - 'a' + 1;
-                    else                     sum += ch - 'A' + 27;
+                    else sum += ch - 'A' + 27;
                 }
             }
             set1.clear();

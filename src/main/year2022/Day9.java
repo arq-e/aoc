@@ -1,20 +1,20 @@
 package main.year2022;
 
-import main.AdventInputReader;
+import main.utils.AdventInputReader;
+import main.utils.Day;
 
 import java.io.IOException;
 import java.util.*;
 
-public class day9 {
+public class Day9 extends Day {
 
-    public static void main(String[] args) throws IOException {
-        List<String> input = AdventInputReader.getInput(2022,9);
-
-        solve(input);
-
+    public static void main(String[] args) throws IOException{
+        Day9 day = new Day9();
+        List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        day.solve(input);
     }
 
-    public static void solve(List<String> list) {
+    public void solve(List<String> list) {
 
         Map<Integer, Set<Integer>> positions = new HashMap<>();
         positions.put(0,new HashSet<>());
@@ -74,7 +74,7 @@ public class day9 {
         solve2(list);
     }
 
-    public static void solve2(List<String> list) {
+    public void solve2(List<String> list) {
 
         Map<Integer, Set<Integer>> positions = new HashMap<>();
 
