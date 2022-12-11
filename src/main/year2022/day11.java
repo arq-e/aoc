@@ -18,40 +18,32 @@ public class day11 {
         List<Integer> monkeyTest = new ArrayList<>();
         List<int[]> monkeyAction = new ArrayList<>();
         List<int[]> monkeyOperation = new ArrayList<>();
-        int command = 0;
-        for (String s : list) {
-            if (command == 0){
-                monkeyItems.add(new ArrayList<>());
-            } else if (command == 1) {
-                String[] items = s.substring(18).split(", ");
-                for (String str : items) {
-                    monkeyItems.get(monkeyItems.size()-1).add(Integer.parseInt(str));
-                }
-            } else if (command == 2) {
-                int[] operation = new int[2];
-                if (s.contains("+")) {
-                    operation[0] = 1;
-                } else {
-                    operation[0] = 2;
-                }
-                if (!s.substring(25).equals("old")) {
-                    operation[1] = Integer.parseInt(s.substring(25));
-                }
-                monkeyOperation.add(operation);
-            } else if (command == 3) {
-                monkeyTest.add(Integer.parseInt(s.substring(21)));
-            } else if (command == 4) {
-                int[] action = new int[2];
-                action[0] = Integer.parseInt(s.substring(29));
-                monkeyAction.add(action);
-            } else  if (command == 5) {
-                monkeyAction.get(monkeyAction.size()-1)[1] = Integer.parseInt(s.substring(30));
-            } else if (command == 6) {
-                command = -1;
+        for (int i = 0; i < list.size(); i+= 7) {
+            monkeyItems.add(new ArrayList<>());
+            String[] items = list.get(i+1).substring(18).split(", ");
+            for (String str : items) {
+                monkeyItems.get(monkeyItems.size()-1).add(Integer.parseInt(str));
             }
-            command++;
+
+            int[] operation = new int[2];
+            if (list.get(i+2).contains("+")) {
+                operation[0] = 1;
+            } else {
+                operation[0] = 2;
+            }
+            if (!list.get(i+2).endsWith("old")) {
+                operation[1] = Integer.parseInt(list.get(i+2).substring(25));
+            }
+            monkeyOperation.add(operation);
+
+            monkeyTest.add(Integer.parseInt(list.get(i+3).substring(21)));
+
+            int[] action = new int[2];
+            action[0] = Integer.parseInt(list.get(i+4).substring(29));
+            action[1] = Integer.parseInt(list.get(i+5).substring(30));
+            monkeyAction.add(action);
         }
-        int[] inspected = new int[monkeyItems.size()];
+
         List<List<Long>> monkeyItemsCopy = new ArrayList<>();
         for (List<Integer> items : monkeyItems) {
             monkeyItemsCopy.add(new ArrayList<>());
@@ -59,29 +51,30 @@ public class day11 {
                 monkeyItemsCopy.get(monkeyItemsCopy.size()-1).add(Long.valueOf(j));
             }
         }
+
+        int[] inspected = new int[monkeyItems.size()];
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < monkeyItems.size(); j++) {
                 for (Integer item : monkeyItems.get(j)) {
                     inspected[j]++;
-                    int newWorryLevel = item;
                     if (monkeyOperation.get(j)[1] == 0) {
                         if (monkeyOperation.get(j)[0] == 1) {
-                            newWorryLevel += item;
+                            item += item;
                         } else {
-                            newWorryLevel *= item;
+                            item *= item;
                         }
                     } else {
                         if (monkeyOperation.get(j)[0] == 1) {
-                            newWorryLevel += monkeyOperation.get(j)[1];
+                            item += monkeyOperation.get(j)[1];
                         } else {
-                            newWorryLevel *= monkeyOperation.get(j)[1];
+                            item  *= monkeyOperation.get(j)[1];
                         }
                     }
-                    newWorryLevel /= 3;
-                    if (newWorryLevel % monkeyTest.get(j) == 0) {
-                        monkeyItems.get(monkeyAction.get(j)[0]).add(newWorryLevel);
+                    item /= 3;
+                    if (item % monkeyTest.get(j) == 0) {
+                        monkeyItems.get(monkeyAction.get(j)[0]).add(item);
                     } else {
-                        monkeyItems.get(monkeyAction.get(j)[1]).add(newWorryLevel);
+                        monkeyItems.get(monkeyAction.get(j)[1]).add(item);
                     }
                 }
                 monkeyItems.get(j).clear();
@@ -108,25 +101,24 @@ public class day11 {
             for (int j = 0; j < monkeyItems.size(); j++) {
                 for (Long item : monkeyItems.get(j)) {
                     inspected[j]++;
-                    long newWorryLevel = item % div;
+                    item %= div;
                     if (monkeyOperation.get(j)[1] == 0) {
                         if (monkeyOperation.get(j)[0] == 1) {
-                            newWorryLevel += item % div;
+                            item += item % div;
                         } else {
-                            newWorryLevel *= item % div;
+                            item *= item % div;
                         }
                     } else {
                         if (monkeyOperation.get(j)[0] == 1) {
-                            newWorryLevel += monkeyOperation.get(j)[1];
+                            item += monkeyOperation.get(j)[1];
                         } else {
-                            newWorryLevel *= monkeyOperation.get(j)[1];
+                            item *= monkeyOperation.get(j)[1];
                         }
                     }
-                    newWorryLevel  %= div;
-                    if (newWorryLevel % monkeyTest.get(j) == 0) {
-                        monkeyItems.get(monkeyAction.get(j)[0]).add(newWorryLevel);
+                    if (item % monkeyTest.get(j) == 0) {
+                        monkeyItems.get(monkeyAction.get(j)[0]).add(item);
                     } else {
-                        monkeyItems.get(monkeyAction.get(j)[1]).add(newWorryLevel);
+                        monkeyItems.get(monkeyAction.get(j)[1]).add(item);
                     }
                 }
                 monkeyItems.get(j).clear();

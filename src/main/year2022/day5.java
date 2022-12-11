@@ -4,11 +4,9 @@ import main.AdventInputReader;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class day5 {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         List<String> input = AdventInputReader.getInput(2022, 5);
         solve(input);
 
@@ -32,7 +30,7 @@ public class day5 {
                 num += 1;
             }
         }
-        int k = i + 2;
+
         for (i+=2; i < list.size(); i++) {
                 String str = list.get(i);
                 str = str.replaceAll("[^0-9]"," ");

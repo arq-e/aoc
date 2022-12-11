@@ -26,8 +26,8 @@ public class day3 {
             }
             for (Character ch : set1) {
                 if (set2.contains(ch)) {
-                    if (ch.charValue() >= 'a') sum += ch.charValue() - 'a' + 1;
-                    else sum += ch.charValue() - 'A' + 27;
+                    if (ch >= 'a') sum += ch - 'a' + 1;
+                    else sum += ch - 'A' + 27;
                 }
             }
             set1.clear();
@@ -56,8 +56,8 @@ public class day3 {
             }
             for (Character ch : set1) {
                 if (set2.contains(ch) && set3.contains(ch)) {
-                    if (ch.charValue() >= 'a') sum += ch.charValue() - 'a' + 1;
-                    else                     sum += ch.charValue() - 'A' + 27;
+                    if (ch >= 'a') sum += ch - 'a' + 1;
+                    else                     sum += ch - 'A' + 27;
                 }
             }
             set1.clear();

@@ -15,8 +15,6 @@ public class day7 {
 
     public static void solve(List<String> list) {
         int sum = 0;
-        Map<String, List<String>> dirs = new HashMap<>();
-        dirs.put("/", new ArrayList<>());
         Stack<Directory> dirStack = new Stack<>();
         Directory activeDir = new Directory(" ");
         List<Directory> dirsSet = new ArrayList<>();
@@ -61,57 +59,57 @@ public class day7 {
 
         System.out.println(sum);
 
-        solve2(dirs, dirsSet);
+        solve2(dirsSet);
     }
 
-    public static void solve2(Map<String, List<String>> dirs, List<Directory> dirsSet) {
-        int sum = 0;
+    public static void solve2(List<Directory> dirsSet) {
         int space = 40000000;
 
         List<Integer> dirSizes = new ArrayList<>();
         for (Directory dir: dirsSet) {
             dirSizes.add(dir.getSize());
         }
-        sum = dirSizes.get(0);
         int sumToRemove = dirSizes.get(0) - space;
         Collections.sort(dirSizes);
 
         int sumRemoved = 0;
-        for (int j = 0; j  < dirSizes.size();j++){
-            if (dirSizes.get(j) >= sumToRemove) {
-                sumRemoved = dirSizes.get(j);
+        for (Integer j : dirSizes){
+            if (j >= sumToRemove) {
+                sumRemoved = j;
                 break;
             }
         }
         System.out.println(sumRemoved);
     }
+
+    public static class Directory {
+        String name;
+        List<Directory> dirs;
+        Map<String, Integer> files;
+        int size;
+
+        public Directory(String name) {
+            this.name = name;
+            dirs = new ArrayList<>();
+            files = new HashMap<>();
+            size = 0;
+        }
+
+        public int getSize() {
+            size = 0;
+            if (dirs.size() != 0) {
+                for (Directory dir : dirs) {
+                    size += dir.getSize();
+                }
+            }
+            if (files.size() != 0) {
+                for (String file: files.keySet()) {
+                    size += files.get(file);
+                }
+            }
+            return size;
+        }
+    }
 }
 
-class Directory {
-    String name;
-    List<Directory> dirs;
-    Map<String, Integer> files;
-    int size;
 
-    public Directory(String name) {
-        this.name = name;
-        dirs = new ArrayList<>();
-        files = new HashMap<>();
-        size = 0;
-    }
-
-    public int getSize() {
-        size = 0;
-        if (dirs.size() != 0) {
-            for (Directory dir : dirs) {
-                size += dir.getSize();
-            }
-        }
-        if (files.size() != 0) {
-            for (String file: files.keySet()) {
-                size += files.get(file);
-            }
-        }
-        return size;
-    }
-}
