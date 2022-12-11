@@ -1,4 +1,4 @@
-package main;
+package main.utils;
 
 import java.io.*;
 import java.net.URL;
@@ -13,7 +13,8 @@ import java.util.List;
 
 public class AdventInputReader {
 
-    static public List<String> getInput(int year, int day) throws IOException{
+    public static List<String> getInput(int year, int day) throws IOException{
+
         Path path = Paths.get(System.getProperty("user.dir")+"/inputs/"+year+"/input"+ day + ".txt");
         List<String> inputStrings = new ArrayList<>();
         try (InputStream is = Files.newInputStream(path)) {
@@ -25,14 +26,13 @@ public class AdventInputReader {
                 line = bufferedReader.readLine();
             } while (line != null);
         } catch (IOException e) {
-            inputStrings = downoloadInput(year, day);
+            inputStrings = downloadInput(year, day);
         }
 
         return inputStrings;
     }
 
-
-    static public List<String> downoloadInput(int year, int day) throws IOException {
+    public static List<String> downloadInput(int year, int day) throws IOException {
         if (year < 2015 || year > Year.now().getValue()
                 || year == Year.now().getValue() && MonthDay.now().getMonth().getValue() != 12) {
             System.out.println("Invalid Year!");
@@ -42,14 +42,16 @@ public class AdventInputReader {
             return null;
         }
 
-        Path path = Paths.get(System.getProperty("user.dir")+"/inputs/"+year +"/input" +day +".txt");
+
+        Path path = Paths.get(findOrCreateInputDir(year) + "/input" +day +".txt");
+
         if (!path.toFile().exists()) {
             URL url = new URL("https://adventofcode.com/" + year + "/day/"
                     + day + "/input");
             URLConnection connection = url.openConnection();
             connection.setRequestProperty("Cookie","session="
                     + Files.readString(Path.of(System.getProperty("user.dir")+"/session_id")));
-            connection.setRequestProperty("User-Agent", "githum.com/arq-e/aoc by aragwaith@gmail.com");
+            connection.setRequestProperty("User-Agent", "github.com/arq-e/aoc aragwaith@gmail.com");
 
             Files.copy(connection.getInputStream(), path);
         }
@@ -57,11 +59,16 @@ public class AdventInputReader {
         return Files.readAllLines(path);
     }
 
-    static public void createYearDir(int year) throws IOException{
-        Path dir = Paths.get(System.getProperty("user.dir")+"/inputs/"+year +"/");
+    public static String findOrCreateInputDir(int year) throws IOException{
+        Path dir = Paths.get(System.getProperty("user.dir")+"/inputs/");
         if (!dir.toFile().exists()){
             Files.createDirectory(dir);
         }
+        dir = Paths.get(System.getProperty("user.dir")+"/inputs/"+year +"/");
+        if (!dir.toFile().exists()){
+            Files.createDirectory(dir);
+        }
+        return dir.toString();
     }
 
 }
