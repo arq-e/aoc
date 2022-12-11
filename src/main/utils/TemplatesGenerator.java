@@ -1,5 +1,6 @@
 package main.utils;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,17 +35,16 @@ public class TemplatesGenerator {
             list.remove(1);
         }
 
-        int day = 0;
         for (int i = 1; i < 26; i++) {
             Path file =  Paths.get(dir.toString()+"/Day" + i +".java");
             if (!file.toFile().exists()){
                 Files.createFile(file);
-                for (int j = 0; j < list.size();j++) {
-                    list.add(list.get(0).replaceAll("Day"+ day, "Day" + i));
-                    list.remove(0);
+                FileWriter fileWriter = new FileWriter(String.valueOf(file));
+                for (String s : list) {
+                    fileWriter.append(s.replaceAll("Day0", "Day" + i));
+                    fileWriter.append("\n");
                 }
-                Files.write(file,list);
-                day = i;
+                fileWriter.close();
             }
         }
     }
