@@ -12,14 +12,49 @@ public class Day7 extends Day {
     public static void main(String[] args) throws IOException{
         Day7 day = new Day7();
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        day.solve(input);
+        day.solve1(input);
+        day.solve2(input);
     }
 
-    public void solve(List<String> list) {
+    public void solve1(List<String> list) {
         int sum = 0;
+
+        List<Directory> dirList = convertInput(list);
+
+        for (Directory dir : dirList) {
+            int size = dir.getSize();
+            if (size <= 100000) sum += size;
+        }
+
+        System.out.println(sum);
+    }
+
+    public void solve2(List<String> list) {
+        int space = 40000000;
+
+        List<Directory> dirList = convertInput(list);
+
+        List<Integer> dirSizes = new ArrayList<>();
+        for (Directory dir: dirList) {
+            dirSizes.add(dir.getSize());
+        }
+        int sumToRemove = dirSizes.get(0) - space;
+        Collections.sort(dirSizes);
+
+        int sumRemoved = 0;
+        for (Integer j : dirSizes){
+            if (j >= sumToRemove) {
+                sumRemoved = j;
+                break;
+            }
+        }
+        System.out.println(sumRemoved);
+    }
+
+    private List<Directory> convertInput(List<String> list) {
         Stack<Directory> dirStack = new Stack<>();
         Directory activeDir = new Directory(" ");
-        List<Directory> dirsSet = new ArrayList<>();
+        List<Directory> dirList = new ArrayList<>();
         for (String s : list) {
             if (s.startsWith("$ cd")) {
                 String adress = s.substring(5);
@@ -30,13 +65,13 @@ public class Day7 extends Day {
                     if (adress.equals("/")) {
                         Directory dir = new Directory("/");
                         activeDir = dir;
-                        dirsSet.add(dir);
+                        dirList.add(dir);
                         dirStack.add(dir);
                     } else {
                         for (Directory dir : activeDir.dirs) {
                             if (dir.name.equals(adress)) {
                                 activeDir = dir;
-                                dirsSet.add(dir);
+                                dirList.add(dir);
                                 dirStack.add(dir);
                                 break;
                             }
@@ -53,35 +88,7 @@ public class Day7 extends Day {
                         Integer.parseInt(s.substring(0, s.indexOf(' '))));
             }
         }
-
-        for (Directory dir : dirsSet) {
-            int size = dir.getSize();
-            if (size <= 100000) sum += size;
-        }
-
-        System.out.println(sum);
-
-        solve2(dirsSet);
-    }
-
-    public void solve2(List<Directory> dirsSet) {
-        int space = 40000000;
-
-        List<Integer> dirSizes = new ArrayList<>();
-        for (Directory dir: dirsSet) {
-            dirSizes.add(dir.getSize());
-        }
-        int sumToRemove = dirSizes.get(0) - space;
-        Collections.sort(dirSizes);
-
-        int sumRemoved = 0;
-        for (Integer j : dirSizes){
-            if (j >= sumToRemove) {
-                sumRemoved = j;
-                break;
-            }
-        }
-        System.out.println(sumRemoved);
+        return  dirList;
     }
 
     public class Directory {

@@ -11,57 +11,36 @@ public class Day6 extends Day {
     public static void main(String[] args) throws IOException{
         Day6 day = new Day6();
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        day.solve(input);
+        day.solve1(input);
+        day.solve2(input);
     }
 
-    public void solve(List<String> list) {
-        int sum = 0;
-        String str = list.get(0);
-        Deque<Character> deque = new ArrayDeque<>(4);
-        Set<Character> set = new HashSet<>();
-        for (int i = 0; i < str.length();i++) {
-            deque.addLast(str.charAt(i));
-            if ( deque.size() > 4) {
-                deque.removeFirst();
-            }
-            if (deque.size() == 4) {
-
-                set.addAll(deque);
-                if (set.size() == 4) {
-                    sum = i+1;
-                    break;
-
-                }
-                set.clear();
-            }
-        }
-
-        System.out.println(sum);
-
-        solve2(list);
+    public void solve1(List<String> list) {
+        System.out.println(findStartOfMessage(list.get(0), 4));
     }
 
     public void solve2(List<String> list) {
-        int sum = 0;
-        String str = list.get(0);
-        Deque<Character> deque = new ArrayDeque<>(14);
-        Set<Character> set = new HashSet<>();
-        for (int i = 0; i < str.length();i++) {
-            deque.addLast(str.charAt(i));
-            if (deque.size() > 14) {
+        System.out.println(findStartOfMessage(list.get(0), 14));
+    }
+
+    private int findStartOfMessage(String s, int length) {
+        Deque<Character> deque = new ArrayDeque<>(length);
+        int index = 0;
+        for (int i = 0; i < s.length();i++) {
+            deque.addLast(s.charAt(i));
+            if (deque.size() > length) {
                 deque.removeFirst();
             }
-            if (deque.size() == 14) {
-
-                set.addAll(deque);
-                if (set.size() == 14) {
-                    sum = i+1;
+            if (deque.size() == length) {
+                if (deque.stream().distinct().count() == (long)length) {
+                    index  = i+1;
                     break;
                 }
-                set.clear();
             }
         }
 
-        System.out.println(sum);
+        return index;
     }
+
+
 }

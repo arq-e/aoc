@@ -13,10 +13,11 @@ public class Day12 extends Day {
     public static void main(String[] args) throws IOException {
         Day12 day = new Day12();
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        day.solve(input);
+        day.solve1(input);
+        day.solve2(input);
     }
 
-    public void solve(List<String> list) {
+    public void solve1(List<String> list) {
 
         char[][] heightsMap = readInput(list);
         int[] start = findPosition(heightsMap, 'S');
@@ -26,7 +27,6 @@ public class Day12 extends Day {
 
         int res = pathMap[start[0]][start[1]];
         System.out.println(res);
-        solve2(list);
     }
 
     public void solve2(List<String> list) {

@@ -12,10 +12,11 @@ public class Day1 extends Day {
     public static void main(String[] args) throws IOException{
         Day1 day = new Day1();
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        day.solve(input);
+        day.solve1(input);
+        day.solve2(input);
     }
 
-    public void solve(List<String> list) {
+    public void solve1(List<String> list) {
         int maxSum = 0;
         int sum = 0;
         for (String s : list) {
@@ -28,8 +29,6 @@ public class Day1 extends Day {
 
 
         System.out.println(maxSum);
-
-        solve2(list);
     }
 
     public void solve2(List<String> list) {

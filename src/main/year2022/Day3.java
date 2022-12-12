@@ -13,10 +13,11 @@ public class Day3 extends Day {
     public static void main(String[] args) throws IOException{
         Day3 day = new Day3();
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        day.solve(input);
+        day.solve1(input);
+        day.solve2(input);
     }
 
-    public void solve(List<String> list) {
+    public void solve1(List<String> list) {
         Set<Character> set1 = new HashSet<>();
         Set<Character> set2 = new HashSet<>();
         int sum = 0;
@@ -35,8 +36,6 @@ public class Day3 extends Day {
             set2.clear();
         }
         System.out.println(sum);
-
-        solve2(list);
     }
 
     public void solve2(List<String> list) {

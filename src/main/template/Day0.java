@@ -11,17 +11,17 @@ public class Day0 extends Day {
     public static void main(String[] args) throws IOException {
         Day0 day = new Day0();
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        day.solve(input);
+        day.solve1(input);
+        day.solve2(input);
     }
 
-    public void solve(List<String> list) {
+    public void solve1(List<String> list) {
         int sum = 0;
         for (String s : list) {
 
         }
 
         System.out.println(sum);
-        solve2(list);
     }
 
     public void solve2(List<String> list) {
