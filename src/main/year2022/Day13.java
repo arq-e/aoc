@@ -30,29 +30,11 @@ public class Day13 extends Day {
     }
 
     public void solve2(List<String> list) {
-
-        Queue<String> pq = new PriorityQueue<>((o1, o2) -> compareElements(o2, o1));
-
-        for (String s : list) {
-            if (s.length() != 0) {
-                pq.add(s);
-            }
-        }
-
-        String[] dividerPackets = new String[]{"[[2]]", "[[6]]"};
-        pq.addAll(Arrays.asList(dividerPackets));
-
-        int res = 1;
-        int pos = 0;
-        for (String dividerPacket : dividerPackets) {
-            while (pq.size() > 0) {
-                pos++;
-                String s = pq.poll();
-                if (s.equals(dividerPacket)) break;
-            }
-            res *= pos;
-        }
-        System.out.println(res);
+        list.removeIf(s -> s.length() == 0);
+        list.add("[[2]]");
+        list.add("[[6]]");
+        list.sort((o1, o2) -> compareElements(o2, o1));
+        System.out.println((list.indexOf("[[2]]")+1)*(list.indexOf("[[6]]")+1));
     }
 
     private String[] splitElements(String s) {
