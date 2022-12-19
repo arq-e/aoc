@@ -4,8 +4,7 @@ import main.utils.AdventInputReader;
 import main.utils.Day;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Day19 extends Day {
 
@@ -20,7 +19,7 @@ public class Day19 extends Day {
         int sum = 0;
         List<Blueprint> blueprints = convertInput(list);
         for (Blueprint blueprint : blueprints) {
-            int geodes = collectGeodes(blueprint, 0, new int[]{0,0,0,0}, new int[]{1,0,0,0}, 24);
+            int geodes = collectGeodesBFS(blueprint, 24);
             sum += blueprint.getNumber()*geodes;
         }
         System.out.println(sum);
@@ -30,15 +29,15 @@ public class Day19 extends Day {
         int res = 1;
         List<Blueprint> blueprints = convertInput(list);
         for (Blueprint blueprint : blueprints) {
-            int geodes = collectGeodes(blueprint, 0, new int[]{0,0,0,0}, new int[]{1,0,0,0}, 32);
+            int geodes = collectGeodesBFS(blueprint, 32);
             res *= geodes;
             if (blueprint.getNumber() >= 3) break;
         }
         System.out.println(res);
     }
 
-    private int collectGeodes(Blueprint blueprint, int time, int[] resources, int[] workingRobots, int maxTime) {
-        if (time >= maxTime) {
+    private int collectGeodes(Blueprint blueprint, int time, int[] resources, int[] workingRobots, int endTime) {
+        if (time >= endTime) {
             return resources[3];
         }
         int max = 0;
@@ -59,17 +58,17 @@ public class Day19 extends Day {
                     for (int j = 0; j < 4;j++) {
                         resources1[j] += workingRobots[j];
                     }
-                    int[] workingRobots1 = new int[]{workingRobots[0], workingRobots[1], workingRobots[2], workingRobots[3]};
+                    int[] workingRobots1 = Arrays.copyOf(workingRobots,4);
                     ++workingRobots1[i];
-                    int count = collectGeodes(blueprint, time+1, resources1, workingRobots1, maxTime);
+                    int count = collectGeodes(blueprint, time+1, resources1, workingRobots1, endTime);
                     if (count > max) max = count;
                 }
             }
-            int sum = 0;
+            boolean allRobotsBuilt = true;
             for (int i = 0; i < 4; i++) {
-                if (doNotBuild[i]) sum++;
+                allRobotsBuilt &= doNotBuild[i];
             }
-            if (sum == 4) break;
+            if (allRobotsBuilt) break;
 
             ++time;
             for (int i = 0; i < 4;i++) {
@@ -92,8 +91,72 @@ public class Day19 extends Day {
         return false;
     }
 
+    private int collectGeodesBFS(Blueprint blueprint, int endTime) {
+        Deque<int[][]> deque = new ArrayDeque<>();
+        deque.add(new int[][]{{0}, new int[]{1,0,0,0}, new int[]{0,0,0,0}});
+        int[] enoughRobots = new int[]{isEnough(blueprint,0),isEnough(blueprint,1),isEnough(blueprint,2)};
+        int max = 0;
+        while (deque.size() > 0) {
+            int[][] state = deque.pollLast();
+            int time = state[0][0];
+            boolean[] triedRobot = new boolean[]{false,false,false,false};
+            for (int i = 2; i < 4; i++) {
+                if (state[1][i-1] == 0) triedRobot[i] = true;
+            }
+            for (int i = 0; i < 3; i++) {
+                if (state[1][i] >= enoughRobots[i]) triedRobot[i] = true;
+            }
+            boolean build4 = false;
+            while (time < endTime) {
+                for (int i = 3; i >=0; i--) {
+                    if (!triedRobot[i] && canBuildRobot(state[2],blueprint,i)) {
+                        triedRobot[i] = true;
+                        int[] resources1 = buildRobot(state[2], blueprint,i);
+                        for (int j = 0; j < 4;j++) {
+                            resources1[j] += state[1][j];
+                        }
+                        int[] workingRobots1 = Arrays.copyOf(state[1],4);
+                        ++workingRobots1[i];
+                        int[][] newState = new int[][]{{time+1}, workingRobots1, resources1};
+                        deque.addFirst(newState);
+                        if (i == 3) {
+                            build4 = true;
+                            break;
+                        }
+                    }
+                }
+                boolean allRobotsBuilt = true;
+                for (int i = 0; i < 4; i++) {
+                    allRobotsBuilt &= triedRobot[i];
+                }
+                if (allRobotsBuilt || build4) break;
+
+                ++time;
+                for (int j = 0; j < 4;j++) {
+                    state[2][j] += state[1][j];
+                }
+            }
+            if (state[2][3] > max) max = state[2][3];
+        }
+        return max;
+    }
+
+    private int isEnough(Blueprint blueprint, int type) {
+        if (type == 2) {
+            return blueprint.getGeodeRobotCost()[1];
+        } else if (type == 1) {
+            return blueprint.getObsidianRobotCost()[1];
+        } else if (type == 0) {
+            int max = blueprint.getOreRobotCost();
+            max = Math.max(max, blueprint.getClayRobotCost());
+            max = Math.max(max, blueprint.getObsidianRobotCost()[0]);
+            return Math.max(max, blueprint.getGeodeRobotCost()[0]);
+        }
+        return -1;
+    }
+
     private int[] buildRobot(int[] resources, Blueprint blueprint, int robot) {
-        int[] resources1 = new int[]{resources[0],resources[1], resources[2], resources[3]};
+        int[] resources1 = Arrays.copyOf(resources, 4);
         if (robot == 0) {
             resources1[0] -= blueprint.getOreRobotCost();
         } else if (robot == 1) {
