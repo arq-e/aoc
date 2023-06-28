@@ -9,5 +9,5 @@ Repository with my solutions for [AdventOfCode](https://adventofcode.com/).
 5. Run puzzle solution of your choice.
 6. Enter aquired puzzle answer on https://adventofcode.com.
 
-# Solved problems
-- year 2022: all
+# Contains
+- year 2022: full
