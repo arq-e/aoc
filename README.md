@@ -10,4 +10,5 @@ Repository with my solutions for [AdventOfCode](https://adventofcode.com/).
 6. Enter aquired puzzle answer on https://adventofcode.com.
 
 # Contains
-- year 2022: full
+year 2021: days 1-5
+year 2022: full
