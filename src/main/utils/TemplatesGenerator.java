@@ -27,7 +27,7 @@ public class TemplatesGenerator {
             Files.createDirectory(dir);
         }
         List<String> list = new ArrayList<>();
-        Path template = Paths.get(System.getProperty("user.dir")+"/src/main/template/Day0.java");
+        Path template = Paths.get(System.getProperty("user.dir")+"/resources/templates/Day0.template");
         if (!template.toFile().exists()) System.out.println("Template doesn't found!");
         else list = Files.readAllLines(template);
         for (int j = 0; j < list.size();j++) {
