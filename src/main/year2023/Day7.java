@@ -13,10 +13,6 @@ public class Day7 extends Day {
 
     public static void main(String[] args) throws IOException {
         Day7 day = new Day7();
-        
-        List<String> sample = AdventInputReader.getSample();
-        day.solve1(sample);
-        day.solve2(sample);
 
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
         day.solve1(input);
@@ -58,7 +54,7 @@ public class Day7 extends Day {
     }
 
     public class Hand implements Comparable<Hand> {
-        private List<Card> cards;
+        private List<Integer> cards;
         private int bid;
         private int strength;
 
@@ -66,12 +62,12 @@ public class Day7 extends Day {
             this.bid = Integer.parseInt(bid);
             this.cards = new ArrayList<>();
             for (char label : cards.toCharArray()) {
-                this.cards.add(new Card(label));
+                this.cards.add(getCardWorth(label));
             }
             calculateHandStrength(this.cards);
         }
 
-        List<Card> getCards() {
+        List<Integer> getCards() {
             return this.cards;
         }
 
@@ -83,12 +79,12 @@ public class Day7 extends Day {
             return this.strength;
         }
 
-        private void calculateHandStrength(List<Card> cards) {
+        private void calculateHandStrength(List<Integer> cards) {
             int[] freq = new int[15];
             int jokers = 0;
             for (int i = 0; i < cards.size(); ++i) {
-                if (cards.get(i).getValue() > 0) {
-                    ++freq[cards.get(i).getValue()];
+                if (cards.get(i) > 0) {
+                    ++freq[cards.get(i)];
                 } else ++jokers;
             }
 
@@ -125,49 +121,37 @@ public class Day7 extends Day {
 
         }
 
+        private int getCardWorth(char label) {
+            if (label == 'A') {
+                return 14;
+            } else if (label == 'K') {
+                return 13;
+            } else if (label == 'Q') {
+                return 12;
+            } else if (label == 'J') {
+                return 11;
+            } else if (label == 'T') {
+                return 10;
+            } else if (label == 'j') {
+                return 0;
+            } else {
+                return label - 48;
+            }
+        }
+
         @Override
         public int compareTo(Hand second) {
             if (this.strength != second.getStrength()) {
                 return this.getStrength() - second.getStrength();
             } else {
                 for (int i = 0; i < Math.min(this.getCards().size(), second.getCards().size()); ++i) {
-                    if (this.getCards().get(i).getValue() != second.getCards().get(i).getValue()) {
-                        return this.getCards().get(i).getValue() - second.getCards().get(i).getValue();
+                    if (this.getCards().get(i) != second.getCards().get(i)) {
+                        return this.getCards().get(i) - second.getCards().get(i);
                     }
                 }
                 return this.cards.size() - second.getCards().size();
             }
         }
 
-    }
-
-    public class Card implements Comparable<Card> {
-        private int value;
-
-        public Card(char label) {
-            if (label == 'A') {
-                this.value = 14;
-            } else if (label == 'K') {
-                this.value = 13;
-            } else if (label == 'Q') {
-                this.value = 12;
-            } else if (label == 'J') {
-                this.value = 11;
-            } else if (label == 'T') {
-                this.value = 10;
-            } else if (label == 'j') {
-                this.value = 0;
-            } else {
-                this.value = label - 48;
-            }
-        }
-
-        public int getValue() {
-            return this.value;
-        }
-
-        public int compareTo(Card second) {
-            return this.getValue() - second.getValue();
-        }
     }
 }
