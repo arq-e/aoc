@@ -48,6 +48,7 @@ public class Day17 extends Day {
                 move(active, cur, map, bestScores, minLength, maxLength);               
             }
         }
+        
         return -1;
     }
 
