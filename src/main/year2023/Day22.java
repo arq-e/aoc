@@ -5,6 +5,7 @@ import main.utils.Day;
 import main.utils.ParsingUtils;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 
 public class Day22 extends Day {
@@ -13,8 +14,11 @@ public class Day22 extends Day {
         Day22 day = new Day22();
 
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
+        Instant start = Instant.now();
         day.solve1(input);
         day.solve2(input);
+        Instant end = Instant.now();
+        System.out.println(end.toEpochMilli() - start.toEpochMilli());
     }
 
     public void solve1(List<String> list) {
@@ -58,7 +62,7 @@ public class Day22 extends Day {
         Collections.sort(bricks);
         int max = bricks.get(bricks.size()-1).z[1];
         for (int i = 0; i <= max; ++i) {
-            lines.put(i, new int[500][500]);
+            lines.put(i, new int[10][10]);
             brickRow.put(i, new HashSet<>());            
         }        
         for (Brick brick : bricks) {
@@ -102,25 +106,25 @@ public class Day22 extends Day {
         return res;
     }
     private boolean checkRow(Map<Integer, int[][]> lines, int row, Map<Integer, Set<Brick>> brickRow) {
-        boolean weCan = false;
+        boolean haveSupport = false;
         if (!brickRow.containsKey(row)) return true;
         for (Brick brick : brickRow.get(row)) {
-            weCan = false;
-            weCan = checkBrick(lines, row, brick);
-            if (!weCan) break;
+            haveSupport = false;
+            haveSupport = checkBrick(lines, row, brick);
+            if (!haveSupport) break;
         }
-        return weCan;
+        return haveSupport;
     }
 
     private boolean checkBrick(Map<Integer, int[][]> lines, int row, Brick brick) {
-        boolean weCan = false;
+        boolean haveSupport = false;
         if (!lines.containsKey(row-1) || row == 1) return true;
             for (int j = brick.x[0]; j <= brick.x[1]; ++j) {
                 for (int k = brick.y[0]; k <= brick.y[1]; ++k) {
-                    if (lines.get(row-1)[j][k] != 0) weCan = true;
+                    if (lines.get(row-1)[j][k] != 0) haveSupport = true;
                 }
             }
-        return weCan;
+        return haveSupport;
     }
 
     private int desintagrate(Map<Integer, int[][]> lines, Brick brick, Map<Integer, Set<Brick>> brickRow) {
