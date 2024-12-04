@@ -5,8 +5,7 @@ import main.utils.ArraysUtils;
 import main.utils.Day;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.util.*;
+import java.util.List;
 
 public class Day4 extends Day {
     int[][] dirs = new int[][]{{-1,-1},{-1,0}, {-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}};
@@ -15,13 +14,8 @@ public class Day4 extends Day {
         Day4 day = new Day4();
 
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
-        Instant start = Instant.now();
         day.solve1(input);
-        Instant p1 = Instant.now();
         day.solve2(input);
-        Instant p2 = Instant.now();
-        System.out.println(p1.toEpochMilli() - start.toEpochMilli());
-        System.out.println(p2.toEpochMilli() - start.toEpochMilli());
     }
 
     public void solve1(List<String> list) {
