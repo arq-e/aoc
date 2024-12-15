@@ -13,13 +13,10 @@ import java.util.Set;
 
 public class Day15 extends Day {
     int[][] dirs = {{-1,0}, {0,1}, {1,0}, {0,-1}};
+    private char[] movements;
 
     public static void main(String[] args) throws IOException {
         Day15 day = new Day15();
-        
-        List<String> sample = AdventInputReader.getSample();
-        day.solve1(sample);
-        day.solve2(sample);
 
         List<String> input = AdventInputReader.getInput(day.getYear(), day.getDay());
         day.solve1(input);
@@ -27,59 +24,24 @@ public class Day15 extends Day {
     }
 
     public void solve1(List<String> list) {
-        int p = 0;
-        for (int i = 0; i < list.size(); ++i) {
-            if (list.get(i).length() <= 1) {
-                p = i + 1;
-                break;
-            }
-        }
-
-        char[][] map = new char[p][];
-        for (int i = 0; i < map.length; ++i) {
-            map[i] = list.get(i).toCharArray();
-        }
-
-        String movements = "";
-        for (int i = p; i < list.size(); ++i) {
-            movements = movements + list.get(i);
-        }
-
+        char[][] map = parseMap(list);
         int[] pos = findRobot(map);
-        moveRobot(map, movements, pos[0], pos[1]);
+        moveRobot(map, pos[0], pos[1]);
 
         System.out.printf("Part 1 answer is: %d\n", countScore(map));
     }
 
     public void solve2(List<String> list) {
-        int p = 0;
-        for (int i = 0; i < list.size(); ++i) {
-            if (list.get(i).length() <= 1) {
-                p = i + 1;
-                break;
-            }
-        }
-
-        char[][] map = new char[p][];
-        for (int i = 0; i < map.length; ++i) {
-            map[i] = list.get(i).toCharArray();
-        }
-
-        String movements = "";
-        for (int i = p; i < list.size(); ++i) {
-            movements = movements + list.get(i);
-        }
-
-        map = expandMap(map);
+        char[][] map = expandMap(parseMap(list));
         int[] pos = findRobot(map);
-        moveRobot(map, movements, pos[0], pos[1]);
+        moveRobot(map, pos[0], pos[1]);
 
         System.out.printf("Part 2 answer is: %d\n", countScore(map));
     }
 
-    private void moveRobot(char[][] map, String movements, int x, int y) {
+    private void moveRobot(char[][] map, int x, int y) {
         char[] d = new char[]{'^','>','v','<'};
-        for (char m : movements.toCharArray()) {
+        for (char m : movements) {
             int dir = 0;
             for (int i = 0; i < 4; ++i) {
                 if (m == d[i]) {
@@ -150,9 +112,9 @@ public class Day15 extends Day {
         while (true) {
             boolean freeRow = true;
             for (int i : movablePositions.get(prevX)) {
-                if (map[x][i] == '.') {
+                if (map[x][i] == '.')
                     continue;
-                }
+
                 if (map[x][i] == '#') {
                     return false;
                 } else {
@@ -189,6 +151,29 @@ public class Day15 extends Day {
         return true;
     }
 
+    private char[][] parseMap(List<String> list) {
+        int p = 0;
+        for (int i = 0; i < list.size(); ++i) {
+            if (list.get(i).length() <= 1) {
+                p = i + 1;
+                break;
+            }
+        }
+
+        char[][] map = new char[p][];
+        for (int i = 0; i < map.length; ++i) {
+            map[i] = list.get(i).toCharArray();
+        }
+
+        String moves = "";
+        for (int i = p; i < list.size(); ++i) {
+            moves = moves + list.get(i);
+        }
+        movements = moves.toCharArray();
+
+        return map;
+    }
+
     private int[] findRobot(char[][] map) {
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < map[0].length; ++j) {
@@ -201,39 +186,39 @@ public class Day15 extends Day {
     }
 
     private int countScore(char[][] map) {
-        int res = 0;
+        int score = 0;
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < map[i].length; ++j) {
                 if (map[i][j] == 'O' || map[i][j] == '[') {
-                    res += i * 100;
-                    res += j;
+                    score += i * 100;
+                    score += j;
                 }
             }
         }
 
-        return res;
+        return score;
     }
 
     private char[][] expandMap(char[][] map) {
-        char[][] res = new char[map.length][2 * map[0].length];
+        char[][] expandedMap = new char[map.length][2 * map[0].length];
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < map[i].length; ++j) {
                 if (map[i][j] == '#') {
-                    res[i][j*2] = '#';
-                    res[i][j*2 + 1] = '#';
+                    expandedMap[i][j*2] = '#';
+                    expandedMap[i][j*2 + 1] = '#';
                 } else if (map[i][j] == '.') {
-                    res[i][j*2] = '.';
-                    res[i][j*2 + 1] = '.';                    
+                    expandedMap[i][j*2] = '.';
+                    expandedMap[i][j*2 + 1] = '.';                    
                 } else if (map[i][j] == 'O') {
-                    res[i][j*2] = '[';
-                    res[i][j*2 + 1] = ']'; 
+                    expandedMap[i][j*2] = '[';
+                    expandedMap[i][j*2 + 1] = ']'; 
                 } else if (map[i][j] == '@') {
-                    res[i][j*2] = '@';
-                    res[i][j*2 + 1] = '.';                     
+                    expandedMap[i][j*2] = '@';
+                    expandedMap[i][j*2 + 1] = '.';                     
                 }
             }
         }
 
-        return res;
+        return expandedMap;
     }
 }
